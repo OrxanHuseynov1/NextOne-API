@@ -10,9 +10,8 @@ public class ReturnConfiguration : IEntityTypeConfiguration<Return>
     {
         builder.ToTable("Returns");
 
-        builder.HasKey(r => r.Id);
-
         builder.Property(r => r.PaymentType)
+            .HasConversion<int>()
             .IsRequired();
 
         builder.Property(r => r.DebtReduction)
@@ -25,16 +24,6 @@ public class ReturnConfiguration : IEntityTypeConfiguration<Return>
 
         builder.HasIndex(r => r.CompanyId);
         builder.HasIndex(r => r.CustomerId);
-
-        // Audit fields
-        builder.Property(x => x.CreatedAt).IsRequired();
-        builder.Property(x => x.CreatedBy).IsRequired();
-        builder.Property(x => x.LastModifiedAt);
-        builder.Property(x => x.LastModifiedBy);
-        builder.Property(x => x.DeletedAt);
-        builder.Property(x => x.DeletedBy);
-
-        builder.HasQueryFilter(x => !x.IsDeleted);
 
         builder.HasOne(r => r.Customer)
             .WithMany()

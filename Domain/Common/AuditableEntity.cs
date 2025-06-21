@@ -10,5 +10,4 @@ public abstract class AuditableEntity : BaseEntity
     public string? LastModifiedBy { get; set; }
     public DateTime? DeletedAt { get; set; }
     public string? DeletedBy { get; set; }
-
 }

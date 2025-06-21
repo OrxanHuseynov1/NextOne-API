@@ -41,6 +41,6 @@ public class ReturnItemConfiguration : IEntityTypeConfiguration<ReturnItem>
         builder.HasOne(ri => ri.Return)
             .WithMany(r => r.Items)
             .HasForeignKey(ri => ri.ReturnId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

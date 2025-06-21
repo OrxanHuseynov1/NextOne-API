@@ -5,7 +5,7 @@ namespace Domain.Entities;
 
 public class Customer : AuditableCompanyEntity
 {
-    public required string FullName { get; set; }
+    public required string Name { get; set; }
     public string? PhoneNumber { get; set; }
     public string? Address { get; set; }
     public SaleType BuyType { get; set; }

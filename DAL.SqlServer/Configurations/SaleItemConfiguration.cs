@@ -10,8 +10,6 @@ public class SaleItemConfiguration : IEntityTypeConfiguration<SaleItem>
     {
         builder.ToTable("SaleItems");
 
-        builder.HasKey(si => si.Id);
-
         builder.Property(si => si.BoxCount)
             .IsRequired();
 
@@ -38,20 +36,10 @@ public class SaleItemConfiguration : IEntityTypeConfiguration<SaleItem>
         builder.HasIndex(si => si.SaleId);
         builder.HasIndex(si => si.ProductId);
 
-        // Audit sahələri
-        builder.Property(x => x.CreatedAt).IsRequired();
-        builder.Property(x => x.CreatedBy).IsRequired();
-        builder.Property(x => x.LastModifiedAt);
-        builder.Property(x => x.LastModifiedBy);
-        builder.Property(x => x.DeletedAt);
-        builder.Property(x => x.DeletedBy);
-
-        builder.HasQueryFilter(x => !x.IsDeleted);
-
         builder.HasOne(si => si.Sale)
             .WithMany(s => s.SaleItems)
             .HasForeignKey(si => si.SaleId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(si => si.Product)
             .WithMany()

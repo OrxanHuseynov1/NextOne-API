@@ -2,11 +2,10 @@
 
 namespace Domain.Entities;
 
-public class SaleItem : AuditableEntity
+public class SaleItem : AuditableCompanyEntity
 {
     public int BoxCount { get; set; } = 1;
     public int Count { get; set; }
-    public int Quantity { get; set; }
     public decimal UnitPrice { get; set; }
     public int OrderIndex { get; set; }
     public Guid SaleId { get; set; }

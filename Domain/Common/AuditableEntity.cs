@@ -1,4 +1,6 @@
-﻿namespace Domain.Common;
+﻿using Domain.Entities;
+
+namespace Domain.Common;
 
 public abstract class AuditableEntity : BaseEntity
 {

@@ -9,7 +9,7 @@ public class SaleItem : AuditableCompanyEntity
     public decimal UnitPrice { get; set; }
     public int OrderIndex { get; set; }
     public Guid SaleId { get; set; }
-    public required Sale Sale { get; set; }
+    public Sale Sale { get; set; }
     public Guid ProductId { get; set; }
-    public required Product Product { get; set; }
+    public Product Product { get; set; }
 }

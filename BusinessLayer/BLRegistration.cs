@@ -1,9 +1,15 @@
 ﻿using BusinessLayer.Profiles.CategoryProfiles;
-using DAL.SqlServer.Context;
-using Microsoft.AspNetCore.Identity;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using DAL.SqlServer.Context;
+using Microsoft.AspNetCore.Identity;
+using Domain.Entities;
 
 namespace BusinessLayer;
 
@@ -13,7 +19,29 @@ public static class BLRegistration
     {
 
         services.AddAutoMapper(typeof(CategoryProfile).Assembly);
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 
 
+        services.AddAuthentication(cfg => {
+            cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            cfg.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(x => {
+
+            x.TokenValidationParameters = new TokenValidationParameters
+            {
+
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8
+                        .GetBytes(configuration["Jwt:SecretKey"]!)
+                ),
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                ValidAudience = configuration["Jwt:Audience"],
+                ValidIssuer = configuration["Jwt:Issuer"]
+            };
+        });
     }
 }

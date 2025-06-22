@@ -5,8 +5,8 @@ namespace Domain.Entities;
 
 public class Company : AuditableEntity
 {
-    public required string Name { get; set; }
-    public required string PhoneNumber { get; set; }
+    public string Name { get; set; }
+    public string PhoneNumber { get; set; }
     public List<ModuleType> ModuleTypes { get; set; } = [];
     public DateTime PackageEndDate { get; set; }
     public bool AutoSubtractStock { get; set; }

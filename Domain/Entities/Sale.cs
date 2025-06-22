@@ -11,5 +11,5 @@ public class Sale : AuditableCompanyEntity
     public Status SaleStatus { get; set; } = Status.Approved;
     public Guid? CustomerId { get; set; }
     public Customer? Customer { get; set; }
-    public required ICollection<SaleItem> SaleItems { get; set; }
+    public ICollection<SaleItem> SaleItems { get; set; }
 }

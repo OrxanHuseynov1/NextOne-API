@@ -34,13 +34,13 @@ public class SaleConfiguration : IEntityTypeConfiguration<Sale>
 
 
         builder.HasOne(s => s.Customer)
-            .WithMany()
+            .WithMany(c => c.Sales)
             .HasForeignKey(s => s.CustomerId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasMany(s => s.SaleItems)
-            .WithOne(si => si.Sale)
-            .HasForeignKey(si => si.SaleId)
-            .OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(r => r.Company)
+            .WithMany()
+            .HasForeignKey(r => r.CompanyId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

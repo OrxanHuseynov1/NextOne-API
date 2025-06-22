@@ -8,5 +8,5 @@ public class DebtRecord : AuditableCompanyEntity
     public string? Description { get; set; }
     public DateTime Date { get; set; }
     public Guid CustomerId { get; set; }
-    public required Customer Customer { get; set; }
+    public Customer Customer { get; set; }
 }

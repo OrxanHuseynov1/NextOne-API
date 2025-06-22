@@ -4,6 +4,6 @@ namespace Domain.Entities;
 
 public class Chat : AuditableCompanyEntity
 {
-    public required string SenderName { get; set; }
-    public required string Message { get; set; } 
+    public string SenderName { get; set; }
+    public string Message { get; set; } 
 }

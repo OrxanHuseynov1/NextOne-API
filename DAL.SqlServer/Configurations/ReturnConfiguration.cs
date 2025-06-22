@@ -26,13 +26,13 @@ public class ReturnConfiguration : IEntityTypeConfiguration<Return>
         builder.HasIndex(r => r.CustomerId);
 
         builder.HasOne(r => r.Customer)
-            .WithMany()
+            .WithMany(c => c.Returns)
             .HasForeignKey(r => r.CustomerId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasMany(r => r.Items)
-            .WithOne(ri => ri.Return)
-            .HasForeignKey(ri => ri.ReturnId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(r => r.Company)
+            .WithMany()
+            .HasForeignKey(r => r.CompanyId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

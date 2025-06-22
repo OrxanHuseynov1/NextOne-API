@@ -9,6 +9,7 @@ public class TransferProfile : Profile
 {
     public TransferProfile()
     {
+        CreateMap<TransferGetDTO, Transfer>().ReverseMap();
         CreateMap<TransferPostDTO, Transfer>().ReverseMap();
 
     }

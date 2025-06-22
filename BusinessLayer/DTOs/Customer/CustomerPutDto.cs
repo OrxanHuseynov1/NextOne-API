@@ -1,6 +1,6 @@
 ﻿namespace BusinessLayer.DTOs.Customer;
 
-public class CustomerPutDto
+public class CustomerPutDTO
 {
     public Guid Id { get; set; }
     public required string FullName { get; set; }

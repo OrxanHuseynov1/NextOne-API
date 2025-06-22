@@ -2,7 +2,7 @@
 using BusinessLayer.DTOs.Category;
 using Domain.Entities;
 
-namespace BusinessLayer.Profiles;
+namespace BusinessLayer.Profiles.CategoryProfiles;
 
 public class CategoryProfile : Profile
 {

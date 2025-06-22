@@ -1,5 +1,4 @@
-﻿using Domain.Entities;
-using Domain.Enums;
+﻿using Domain.Enums;
 namespace BusinessLayer.DTOs.Customer;
 
 public class CustomerGetDTO
@@ -12,7 +11,7 @@ public class CustomerGetDTO
     public decimal CurrentDebt { get; set; }
     public Guid CompanyId { get; set; }
     public required Domain.Entities.Company Company { get; set; }
-    public ICollection<Sale> Sales { get; set; } = [];
+    public ICollection<Domain.Entities.Sale> Sales { get; set; } = [];
     public ICollection<Domain.Entities.DebtRecord> Debts { get; set; } = [];
     public bool IsDeleted { get; set; } = false;
 }

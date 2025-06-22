@@ -2,7 +2,7 @@
 using BusinessLayer.DTOs.Chat;
 using Domain.Entities;
 
-namespace BusinessLayer.Profiles;
+namespace BusinessLayer.Profiles.ChatProfiles;
 
 public class ChatProfile : Profile
 {

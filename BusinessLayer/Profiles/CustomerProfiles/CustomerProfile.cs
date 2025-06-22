@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BusinessLayer.DTOs.Category;
 using BusinessLayer.DTOs.Customer;
 using Domain.Entities;
 
@@ -12,6 +11,5 @@ public class CustomerProfile : Profile
         CreateMap<CustomerGetDTO, Customer>().ReverseMap();
         CreateMap<CustomerPostDTO, Customer>().ReverseMap();
         CreateMap<CustomerPutDTO, Customer>().ReverseMap();
-
     }
 }

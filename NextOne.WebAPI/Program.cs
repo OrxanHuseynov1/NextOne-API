@@ -1,7 +1,28 @@
 using DAL.SqlServer;
 using BusinessLayer;
+using BusinessLayer.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173",
+                               "http://localhost:3000")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
 
 builder.Services.RegisterDAL(builder.Configuration);
 builder.Services.AddBlServices(builder.Configuration);
@@ -11,6 +32,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseCustomExceptionMiddleware();
 
 if (app.Environment.IsDevelopment())
 {
@@ -19,6 +41,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowSpecificOrigin"); 
 
 app.UseAuthentication();
 

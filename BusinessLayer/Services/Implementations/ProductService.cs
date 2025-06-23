@@ -4,9 +4,6 @@ using BusinessLayer.Services.Abstractions;
 using DAL.SqlServer.Repositories.Abstractions;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Services.Implementations;
 

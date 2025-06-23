@@ -10,5 +10,6 @@ public class SaleItemProfile : Profile
     public SaleItemProfile()
     {
         CreateMap<SaleItemPostDTO, SaleItem>().ReverseMap();
+        CreateMap<SaleItemGetDTO, SaleItem>().ReverseMap();
     }
 }

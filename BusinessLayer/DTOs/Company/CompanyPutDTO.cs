@@ -4,6 +4,7 @@ namespace BusinessLayer.DTOs.Company;
 
 public class CompanyPutDTO
 {
+    public Guid Id { get; set; }
     public required string Name { get; set; }
     public string? PhoneNumber { get; set; }
     public bool AutoSubtractStock { get; set; }

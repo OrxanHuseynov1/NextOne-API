@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DAL.SqlServer.Context;
+using DAL.SqlServer.Repositories.Abstractions;
+using Domain.Entities;
 
-namespace DAL.SqlServer.Repositories.Implementations.Transfer
+namespace DAL.SqlServer.Repositories.Implementations;
+
+public class TransferWriteRepository : WriteRepository<Transfer>, ITransferWriteRepository
 {
-    internal class TransferWriteRepository
+    public TransferWriteRepository(AppDbContext context) : base(context)
     {
     }
 }

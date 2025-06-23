@@ -1,6 +1,6 @@
 ﻿namespace BusinessLayer.DTOs.Auth;
 
-public class LoginDTO
+public class LoginRequestDTO
 {
     public required string UserName { get; set; }
     public required string Password { get; set; }

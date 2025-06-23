@@ -3,7 +3,7 @@ using Domain.Enums;
 
 namespace BusinessLayer.DTOs.Sale;
 
-internal class SalePostDTO
+public class SalePostDTO
 {
     public Guid CustomerId { get; set; }
     public PaymentType PaymentType { get; set; }

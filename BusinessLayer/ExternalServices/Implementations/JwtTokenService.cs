@@ -40,7 +40,7 @@ public class JwtTokenService : IJwtTokenService
 
         var expiresInMinutesString = _configuration["Jwt:ExpiresInMinutes"];
         if (!double.TryParse(expiresInMinutesString, out double expiresInMinutes))
-        {
+        {   
             expiresInMinutes = 60;
         }
 

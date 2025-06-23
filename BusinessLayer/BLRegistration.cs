@@ -7,9 +7,10 @@ using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using DAL.SqlServer.Context;
-using Microsoft.AspNetCore.Identity;
-using Domain.Entities;
+using BusinessLayer.Services.Abstractions;
+using BusinessLayer.Services.Implementations;
+using BusinessLayer.ExternalServices.Abstractions;
+using BusinessLayer.ExternalServices.Implementations;
 
 namespace BusinessLayer;
 
@@ -22,6 +23,24 @@ public static class BLRegistration
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IChatService, ChatService>();
+        services.AddScoped<ICompanyService, CompanyService>();
+        services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<IDebtRecordService, DebtRecordService>();
+        services.AddScoped<IDepoService, DepoService>();
+        services.AddScoped<IExpenseService, ExpenseService>();
+        services.AddScoped<ILossService, LossService>();
+        services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IProductInDepoService, ProductInDepoService>();
+        services.AddScoped<IReturnService, ReturnService>();
+        services.AddScoped<IReturnItemService, ReturnItemService>();
+        services.AddScoped<ISaleService, SaleService>();
+        services.AddScoped<ISaleItemService, SaleItemService>();
+        services.AddScoped<ITransferService, TransferService>();
+        services.AddScoped<IUserService, UserService>();
 
         services.AddAuthentication(cfg => {
             cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

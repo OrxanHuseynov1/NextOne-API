@@ -19,9 +19,4 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\Implementations\User\" />
-    <Folder Include="Repositories\Implementations\Transfer\" />
-  </ItemGroup>
-
 </Project>

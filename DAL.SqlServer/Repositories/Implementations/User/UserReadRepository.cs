@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DAL.SqlServer.Context;
+using DAL.SqlServer.Repositories.Abstractions;
+using Domain.Entities;
 
-namespace DAL.SqlServer.Repositories.Implementations.User
+namespace DAL.SqlServer.Repositories.Implementations;
+
+public class UserReadRepository : ReadRepository<User>, IUserReadRepository
 {
-    internal class UserReadRepository
+    public UserReadRepository(AppDbContext context) : base(context)
     {
     }
 }

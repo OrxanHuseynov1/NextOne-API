@@ -10,5 +10,6 @@ public class ReturunItemProfile : Profile
     public ReturunItemProfile()
     {
         CreateMap<ReturunItemPostDTO, ReturnItem>().ReverseMap();
+        CreateMap<ReturnItemGetDTO, ReturnItem>().ReverseMap();
     }
 }

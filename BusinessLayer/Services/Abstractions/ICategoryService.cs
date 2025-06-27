@@ -12,6 +12,7 @@ public interface ICategoryService
     Task<ICollection<CategoryGetDTO>> GetAllSoftDeletedCategory();
     Task<ICollection<CategoryGetDTO>> GetAllActiveCategoryAsync();
     Task<CategoryGetDTO> GetByIdCategoryAsync(Guid id);
-
+    Task<ICollection<CategoryGetDTO>> GetAllActiveCategoriesByCompanyIdAsync(Guid companyId);
+    Task<ICollection<CategoryGetDTO>> GetAllSoftDeletedCategoriesByCompanyIdAsync(Guid companyId);
+    Task<ICollection<CategoryGetDTO>> GetPagedCategoriesByCompanyIdAsync(Guid companyId, int page, int pageSize, string? searchTerm = null);
 }
-

@@ -1,6 +1,6 @@
-﻿using BusinessLayer.DTOs.Category; 
-using BusinessLayer.Services.Abstractions; 
-using Microsoft.AspNetCore.Mvc; 
+﻿using BusinessLayer.DTOs.Category;
+using BusinessLayer.Services.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace NextOne.WebAPI.Controllers;
 
@@ -21,15 +21,11 @@ public class CategoriesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateCategory([FromBody] CategoryPostDTO request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         try
         {
             await _categoryService.CreateCategoryAsync(request);
-            return StatusCode(StatusCodes.Status201Created); 
+            return StatusCode(StatusCodes.Status201Created);
         }
         catch (Exception ex)
         {
@@ -44,11 +40,7 @@ public class CategoriesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateCategory([FromBody] CategoryPutDTO request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         try
         {
             await _categoryService.UpdateCategoryAsync(request);
@@ -73,7 +65,7 @@ public class CategoriesController : ControllerBase
         try
         {
             await _categoryService.DeleteCategoryAsync(id);
-            return NoContent(); 
+            return NoContent();
         }
         catch (Exception ex) when (ex.Message == "Category not found.")
         {
@@ -151,6 +143,59 @@ public class CategoriesController : ControllerBase
         try
         {
             var categories = await _categoryService.GetAllSoftDeletedCategory();
+            return Ok(categories);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("active/byCompany/{companyId}")]
+    [ProducesResponseType(typeof(ICollection<CategoryGetDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetAllActiveCategoriesByCompanyId(Guid companyId)
+    {
+        try
+        {
+            var categories = await _categoryService.GetAllActiveCategoriesByCompanyIdAsync(companyId);
+            return Ok(categories);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("soft-deleted/byCompany/{companyId}")]
+    [ProducesResponseType(typeof(ICollection<CategoryGetDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetAllSoftDeletedCategoriesByCompanyId(Guid companyId)
+    {
+        try
+        {
+            var categories = await _categoryService.GetAllSoftDeletedCategoriesByCompanyIdAsync(companyId);
+            return Ok(categories);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("paged/{companyId}")]
+    [ProducesResponseType(typeof(ICollection<CategoryGetDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetPagedCategoriesByCompanyId(Guid companyId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
+    {
+        if (page < 1 || pageSize < 1)
+        {
+            return BadRequest("Page and pageSize must be positive integers.");
+        }
+        try
+        {
+            var categories = await _categoryService.GetPagedCategoriesByCompanyIdAsync(companyId, page, pageSize, search);
             return Ok(categories);
         }
         catch (Exception ex)

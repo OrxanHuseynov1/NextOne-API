@@ -52,7 +52,7 @@ public class TransferService : ITransferService
     {
         if (!await _transferReadRepository.IsExist(id)) throw new Exception("Transfer not found.");
         Transfer transfer = await _transferReadRepository.GetOneByCondition(t => t.Id == id && !t.IsDeleted, false)
-                             ?? throw new Exception("Transfer not found.");
+                               ?? throw new Exception("Transfer not found.");
         transfer.IsDeleted = true;
         _transferWriteRepository.Update(transfer);
 
@@ -68,7 +68,7 @@ public class TransferService : ITransferService
     {
         if (!await _transferReadRepository.IsExist(id)) throw new Exception("Transfer not found.");
         Transfer transfer = await _transferReadRepository.GetOneByCondition(t => t.Id == id && t.IsDeleted, false)
-                             ?? throw new Exception("Transfer not found.");
+                               ?? throw new Exception("Transfer not found.");
         transfer.IsDeleted = false;
         _transferWriteRepository.Update(transfer);
 
@@ -97,5 +97,16 @@ public class TransferService : ITransferService
         if (!await _transferReadRepository.IsExist(id)) throw new Exception("Transfer not found.");
         Transfer transfer = await _transferReadRepository.GetByIdAsync(id) ?? throw new Exception("Transfer not found.");
         return _mapper.Map<TransferGetDTO>(transfer);
+    }
+
+    public async Task<ICollection<TransferGetDTO>> GetTransferHistoryByCompanyIdAsync(Guid companyId)
+    {
+        ICollection<Transfer> transfers = await _transferReadRepository
+                                                    .GetAllByCondition(t => t.CompanyId == companyId && !t.IsDeleted)
+                                                    .Include(t => t.Product)
+                                                    .Include(t => t.FromDepo)
+                                                    .Include(t => t.ToDepo)
+                                                    .ToListAsync();
+        return _mapper.Map<ICollection<TransferGetDTO>>(transfers);
     }
 }

@@ -10,7 +10,7 @@ namespace BusinessLayer.Services.Implementations;
 public class AuthService : IAuthService
 {
     private readonly IUserReadRepository _userReadRepository;
-    private readonly ICompanyReadRepository _companyReadRepository;
+    private readonly ICompanyReadRepository _companyReadRepository; 
     private readonly IJwtTokenService _jwtTokenService;
     private readonly IMapper _mapper;
 
@@ -31,18 +31,24 @@ public class AuthService : IAuthService
         var user = await _userReadRepository.GetOneByCondition(
             u => u.UserName == request.UserName,
             false,
-            "Company"
-        ) ?? throw new UnauthorizedAccessException("Invalid username or password.");
+            "Company" 
+        ) ?? throw new UnauthorizedAccessException("İstifadəçi adı və ya şifrə yanlışdır.");
+
         bool passwordMatches = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
 
         if (!passwordMatches)
         {
-            throw new UnauthorizedAccessException("Invalid username or password.");
+            throw new UnauthorizedAccessException("İstifadəçi adı və ya şifrə yanlışdır.");
         }
 
-        if (user.Company != null && user.Company.PackageEndDate < DateTime.UtcNow)
+        if (user.Company == null)
         {
-            throw new UnauthorizedAccessException("Company package has expired. Please contact support to renew.");
+            throw new UnauthorizedAccessException("İstifadəçinin əlaqəli olduğu şirkət tapılmadı.");
+        }
+
+        if (user.Company.PackageEndDate < DateTime.UtcNow)
+        {
+            throw new UnauthorizedAccessException("Şirkətin paketi bitib. Yeniləmək üçün əlaqə saxlayın.");
         }
 
         var token = await _jwtTokenService.GenerateJwtToken(user);
@@ -54,7 +60,10 @@ public class AuthService : IAuthService
         var response = _mapper.Map<LoginResponseDTO>(user);
         response.Token = token;
         response.ExpiresAt = expiresAt;
-        response.Role = user.Role;
+        response.Role = user.Role; 
+
+        response.CompanyName = user.Company.Name;
+        response.PackageEndDate = user.Company.PackageEndDate;
 
         return response;
     }

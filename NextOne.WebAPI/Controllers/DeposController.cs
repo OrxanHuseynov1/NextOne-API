@@ -1,9 +1,7 @@
 ﻿using BusinessLayer.DTOs.Depo;
 using BusinessLayer.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace NextOne.WebAPI.Controllers;
 
@@ -176,6 +174,98 @@ public class DeposController : ControllerBase
         catch (Exception ex) when (ex.Message == "Depo not found.")
         {
             return NotFound(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("count/{companyId}")]
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetDepoCountByCompanyId(Guid companyId)
+    {
+        var userCompanyIdClaim = User.FindFirst("companyId")?.Value;
+        if (string.IsNullOrEmpty(userCompanyIdClaim) || !Guid.TryParse(userCompanyIdClaim, out var parsedUserCompanyId) || parsedUserCompanyId != companyId)
+        {
+            return Unauthorized("Sizin bu şirkətin məlumatlarına giriş icazəniz yoxdur.");
+        }
+
+        try
+        {
+            var count = await _depoService.GetActiveDepoCountByCompanyIdAsync(companyId);
+            return Ok(count);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("by-company/{companyId}")]
+    [ProducesResponseType(typeof(ICollection<DepoGetDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetAllDeposByCompanyId(Guid companyId)
+    {
+        var userCompanyIdClaim = User.FindFirst("companyId")?.Value;
+        if (string.IsNullOrEmpty(userCompanyIdClaim) || !Guid.TryParse(userCompanyIdClaim, out var parsedUserCompanyId) || parsedUserCompanyId != companyId)
+        {
+            return Unauthorized("Sizin bu şirkətin məlumatlarına giriş icazəniz yoxdur.");
+        }
+
+        try
+        {
+            var depos = await _depoService.GetAllDeposByCompanyIdAsync(companyId);
+            return Ok(depos);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("paged/{companyId}")]
+    [ProducesResponseType(typeof(IEnumerable<DepoGetDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetPagedDeposByCompanyId(Guid companyId, [FromQuery] int page = 1, [FromQuery] int pageSize = 20)
+    {
+        var userCompanyIdClaim = User.FindFirst("companyId")?.Value;
+        if (string.IsNullOrEmpty(userCompanyIdClaim) || !Guid.TryParse(userCompanyIdClaim, out var parsedUserCompanyId) || parsedUserCompanyId != companyId)
+        {
+            return Unauthorized("Sizin bu şirkətin məlumatlarına giriş icazəniz yoxdur.");
+        }
+
+        try
+        {
+            var depos = await _depoService.GetPagedDeposByCompanyIdAsync(companyId, page, pageSize);
+            return Ok(depos);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("product-counts/{companyId}")]
+    [ProducesResponseType(typeof(Dictionary<Guid, int>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetDepoProductCounts(Guid companyId)
+    {
+        var userCompanyIdClaim = User.FindFirst("companyId")?.Value;
+        if (string.IsNullOrEmpty(userCompanyIdClaim) || !Guid.TryParse(userCompanyIdClaim, out var parsedUserCompanyId) || parsedUserCompanyId != companyId)
+        {
+            return Unauthorized("Sizin bu şirkətin məlumatlarına giriş icazəniz yoxdur.");
+        }
+
+        try
+        {
+            var counts = await _depoService.GetDepoProductCountsByCompanyIdAsync(companyId);
+            return Ok(counts);
         }
         catch (Exception ex)
         {

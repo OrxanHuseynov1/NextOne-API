@@ -12,4 +12,6 @@ public interface IProductService
     Task<ICollection<ProductGetDTO>> GetAllSoftDeletedProduct();
     Task<ICollection<ProductGetDTO>> GetAllActiveProductAsync();
     Task<ProductGetDTO> GetByIdProductAsync(Guid id);
+    Task<int> GetActiveProductCountByCompanyIdAsync(Guid companyId);
+    Task<decimal> GetTotalActiveProductQuantityByCompanyIdAsync(Guid companyId);
 }

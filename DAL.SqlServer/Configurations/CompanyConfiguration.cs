@@ -47,15 +47,5 @@ public class CompanyConfiguration : IEntityTypeConfiguration<Company>
 
         builder.Property(x => x.ShowAddressOnReceipt)
             .IsRequired();
-
-        builder.Property(x => x.ModuleTypes)
-            .HasConversion(
-                v => string.Join(",", v.Select(m => ((int)m).ToString())),
-                v => v.Split(",", StringSplitOptions.RemoveEmptyEntries)
-                      .Select(s => (ModuleType)int.Parse(s))
-                      .ToList()
-            )
-            .HasMaxLength(200)
-            .HasColumnName("ModuleTypes");
     }
 }

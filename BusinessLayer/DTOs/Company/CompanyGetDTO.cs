@@ -7,7 +7,6 @@ public class CompanyGetDTO
     public Guid Id { get; set; }
     public required string Name { get; set; }
     public string? PhoneNumber { get; set; }
-    public ICollection<ModuleType> ModuleTypes { get; set; } = [];
     public DateTime PackageEndDate { get; set; }
     public bool AutoSubtractStock { get; set; }
     public SaleType SaleType { get; set; }

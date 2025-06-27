@@ -12,4 +12,8 @@ public interface IDepoService
     Task<ICollection<DepoGetDTO>> GetAllSoftDeletedDepo();
     Task<ICollection<DepoGetDTO>> GetAllActiveDepoAsync();
     Task<DepoGetDTO> GetByIdDepoAsync(Guid id);
+    Task<int> GetActiveDepoCountByCompanyIdAsync(Guid companyId);
+    Task<ICollection<DepoGetDTO>> GetAllDeposByCompanyIdAsync(Guid companyId);
+    Task<IEnumerable<DepoGetDTO>> GetPagedDeposByCompanyIdAsync(Guid companyId, int page, int pageSize);
+    Task<Dictionary<Guid, int>> GetDepoProductCountsByCompanyIdAsync(Guid companyId);
 }

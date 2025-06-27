@@ -5,7 +5,7 @@ using Domain.Entities;
 
 namespace BusinessLayer.Profiles.AuthProfiles;
 
-internal class AuthProfile : Profile
+public class AuthProfile : Profile
 {
     public AuthProfile()
     {

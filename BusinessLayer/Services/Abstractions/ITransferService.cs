@@ -11,4 +11,5 @@ public interface ITransferService
     Task<ICollection<TransferGetDTO>> GetAllSoftDeletedTransfer();
     Task<ICollection<TransferGetDTO>> GetAllActiveTransferAsync();
     Task<TransferGetDTO> GetByIdTransferAsync(Guid id);
+    Task<ICollection<TransferGetDTO>> GetTransferHistoryByCompanyIdAsync(Guid companyId);
 }

@@ -2,12 +2,9 @@
 using Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.ExternalServices.Implementations;
 
@@ -26,8 +23,21 @@ public class JwtTokenService : IJwtTokenService
         [
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Role, user.Role.ToString())
+            new Claim(ClaimTypes.Role, user.Role.ToString()),
+            new Claim("fullName", user.FullName),
+            new Claim("companyName", user.Company.Name)
+
         ];
+
+        if (user.Company != null && user.CompanyId != Guid.Empty)
+        {
+            claims.Add(new Claim("companyId", user.CompanyId.ToString()));
+
+            if (user.Company.PackageEndDate != default)
+            {
+                claims.Add(new Claim("packageEndDate", user.Company.PackageEndDate.ToString("o")));
+            }
+        }
 
         var secretKey = _configuration["Jwt:SecretKey"];
         if (string.IsNullOrEmpty(secretKey))
@@ -40,11 +50,11 @@ public class JwtTokenService : IJwtTokenService
 
         var expiresInMinutesString = _configuration["Jwt:ExpiresInMinutes"];
         if (!double.TryParse(expiresInMinutesString, out double expiresInMinutes))
-        {   
+        {
             expiresInMinutes = 60;
         }
 
-        JwtSecurityToken securityToken = new (
+        JwtSecurityToken securityToken = new(
             issuer: _configuration["Jwt:Issuer"],
             audience: _configuration["Jwt:Audience"],
             signingCredentials: signingCredentials,

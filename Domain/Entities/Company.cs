@@ -7,7 +7,6 @@ public class Company : AuditableEntity
 {
     public string Name { get; set; }
     public string PhoneNumber { get; set; }
-    public List<ModuleType> ModuleTypes { get; set; } = [];
     public DateTime PackageEndDate { get; set; }
     public bool AutoSubtractStock { get; set; }
     public SaleType SaleType { get; set; } = SaleType.Both;

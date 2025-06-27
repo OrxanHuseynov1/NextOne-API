@@ -2,6 +2,7 @@
 using BusinessLayer.DTOs.Product;
 using BusinessLayer.Services.Abstractions;
 using DAL.SqlServer.Repositories.Abstractions;
+using DAL.SqlServer.Repositories.Implementations;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,12 +13,14 @@ public class ProductService : IProductService
     private readonly IProductReadRepository _productReadRepository;
     private readonly IProductWriteRepository _productWriteRepository;
     private readonly IMapper _mapper;
+    private readonly IProductInDepoReadRepository _productInDepoReadRepository;
 
-    public ProductService(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository, IMapper mapper)
+    public ProductService(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository, IMapper mapper,IProductInDepoReadRepository productInDepoReadRepository)
     {
         _productReadRepository = productReadRepository;
         _productWriteRepository = productWriteRepository;
         _mapper = mapper;
+        _productInDepoReadRepository = productInDepoReadRepository;
     }
 
     public async Task CreateProductAsync(ProductPostDTO ProductPostDTO)
@@ -115,5 +118,16 @@ public class ProductService : IProductService
         if (!await _productReadRepository.IsExist(id)) throw new Exception("Product not found.");
         Product product = await _productReadRepository.GetByIdAsync(id) ?? throw new Exception("Product not found.");
         return _mapper.Map<ProductGetDTO>(product);
+    }
+
+    public async Task<int> GetActiveProductCountByCompanyIdAsync(Guid companyId)
+    {
+        return await _productReadRepository.GetAllByCondition(p => p.CompanyId == companyId && !p.IsDeleted).CountAsync();
+    }
+
+    public async Task<decimal> GetTotalActiveProductQuantityByCompanyIdAsync(Guid companyId)
+    {
+        return await _productInDepoReadRepository.GetAllByCondition(pid => pid.CompanyId == companyId && !pid.IsDeleted)
+                                                  .SumAsync(pid => pid.Quantity);
     }
 }

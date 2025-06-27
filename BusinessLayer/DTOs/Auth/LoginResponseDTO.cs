@@ -11,4 +11,6 @@ public class LoginResponseDTO
     public string FullName { get; set; }
     public RoleType Role { get; set; }
     public Guid CompanyId { get; set; }
+    public string CompanyName { get; set; }
+    public DateTime PackageEndDate { get; set; }
 }

@@ -1,11 +1,13 @@
 ﻿using BusinessLayer.DTOs.Category;
 using BusinessLayer.Services.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NextOne.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin,HeadSeller,Seller")]
 public class CategoriesController : ControllerBase
 {
     private readonly ICategoryService _categoryService;

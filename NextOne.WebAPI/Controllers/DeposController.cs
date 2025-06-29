@@ -2,11 +2,13 @@
 using BusinessLayer.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NextOne.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin,HeadSeller,Seller")]
 public class DeposController : ControllerBase
 {
     private readonly IDepoService _depoService;

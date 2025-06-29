@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.DTOs.Auth;
 using BusinessLayer.Services.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NextOne.WebAPI.Controllers;
@@ -7,6 +8,7 @@ namespace NextOne.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin,HeadSeller,Seller")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;

@@ -1,6 +1,8 @@
 using DAL.SqlServer;
 using BusinessLayer;
 using BusinessLayer.Middlewares;
+using DAL.SqlServer.Context;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,22 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var dbContext = services.GetRequiredService<AppDbContext>();
+        dbContext.Database.Migrate(); 
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Error when migrating database");
+    }
+}
+
 app.UseCustomExceptionMiddleware();
 
 if (app.Environment.IsDevelopment())

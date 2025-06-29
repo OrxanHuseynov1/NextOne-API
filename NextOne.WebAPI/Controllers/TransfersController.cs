@@ -5,11 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NextOne.WebAPI.Controllers;
 
 [ApiController]
-[Route("api/[controller]")] // Bu, /api/Transfers olacaq
+[Route("api/[controller]")]
+[Authorize(Roles = "Admin,HeadSeller,Seller")]
 public class TransfersController : ControllerBase
 {
     private readonly ITransferService _transferService;
